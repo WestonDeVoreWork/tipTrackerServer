@@ -44,6 +44,20 @@ router.get('/:id', validateJWT, async (req, res) => {
     }
 })
 
+router.get('/mine', validateJWT, async (req, res) => {
+    // let { id } = req.user;
+    const ownerid = req.user.id;
+    try {
+        const userMiles = await MileModel.findAll({
+                where: {
+                    owner: ownerid
+                }
+            });
+            res.status(200).json(userMiles)
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+});
 
 router.get ('/', validateJWT, async (req, res) => {
     try{

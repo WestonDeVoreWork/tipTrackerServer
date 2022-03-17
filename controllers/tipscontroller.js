@@ -46,6 +46,19 @@ router.get('/:id', validateJWT, async (req, res) => {
     }
 })
 
+router.get('/mine', validateJWT, async (req, res) => {
+    const ownerid = req.user.id;
+    try {
+        const userTips = await TipsModel.findAll({
+                where: {
+                    owner_id: ownerid
+                }
+            });
+            res.status(200).json(userTips)
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+});
 
 router.get ('/', validateJWT, async (req, res) => {
     try{
